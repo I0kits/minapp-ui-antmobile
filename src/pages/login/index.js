@@ -5,6 +5,7 @@ import { useRequest } from "umi";
 import { List, InputItem, Button } from "antd-mobile";
 import { WhiteSpace, NoticeBar, Flex, Toast } from "antd-mobile";
 
+import conf from '../../conf';
 import api from "../../apis/login";
 import { update } from "../../helper/current-user";
 
@@ -23,7 +24,7 @@ const loginPage = (props) => {
     manual: true,
     onSuccess: (user) => {
       update(user);
-      props.history.push("/main");
+      props.history.push(conf.uris.main);
     }
   });
 
@@ -36,7 +37,7 @@ const loginPage = (props) => {
   };
 
   return (
-    <List renderHeader={() => "请登录..."}>
+    <List>
       <InputItem
         clear
         placeholder="用户名称"
@@ -61,7 +62,7 @@ const loginPage = (props) => {
           </Button>
         </Flex.Item>
         <Flex.Item>
-          <Button onClick={() => props.history.push("/register")}>注册</Button>
+          <Button onClick={() => props.history.push(conf.uris.register)}>注册</Button>
         </Flex.Item>
       </Flex>
 
@@ -76,4 +77,7 @@ const loginPage = (props) => {
   );
 };
 
-export default createForm()(loginPage);
+const loginForm = createForm()(loginPage);
+loginForm.title = '请登录';
+
+export default loginForm;

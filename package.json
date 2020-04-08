@@ -22,6 +22,7 @@
     "es6-promise": "^4.2.8",
     "fastclick": "^1.0.6",
     "lint-staged": "^10.0.7",
+    "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
     "rc-form": "^2.4.11",
     "react": "^16.12.0",

@@ -7,13 +7,9 @@ import Form from "./components/form";
 
 import api from "../../apis/question";
 
-export default (props) => {
+function QuestionDetailPage(props) {
   const id = props.match.params.id;
   const { loading, data, error } = useRequest(api.show(id));
-
-  console.log("loading:", loading);
-  console.log("data:", data);
-  console.log("error:", error);
 
   if (loading) {
     return (<div>
@@ -29,6 +25,10 @@ export default (props) => {
   }
 
   return (
-    <div>SHow detailssss with FORM</div>
+    <Form data={data} {...props}/>
   )
-};
+}
+
+QuestionDetailPage.title = '查看详细信息';
+
+export default QuestionDetailPage;

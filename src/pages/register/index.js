@@ -6,6 +6,7 @@ import { useRequest } from "umi";
 import { WhiteSpace, TextareaItem } from "antd-mobile";
 import { List, InputItem, Button, Flex, Toast } from "antd-mobile";
 
+import conf from '../../conf';
 import styles from "./index.css";
 import api from "../../apis/authors";
 
@@ -16,12 +17,12 @@ const validateRules = {
   "description": { rules: [{ required: false }] }
 };
 
-export default createForm()((props) => {
+const RegisterPage = createForm()((props) => {
   const { getFieldProps, getFieldError } = props.form;
   const showErrorNotification = (msg) => Toast.info(msg);
   const hasError = (name) => !_.isEmpty(getFieldError(name));
 
-  const pathname = '/register/confirm';
+  const pathname = conf.uris.registerConfirm;
   const { loading, run: doPost } = useRequest(api.register, {
     manual: true,
     onSuccess: ([author, account]) => {
@@ -38,7 +39,7 @@ export default createForm()((props) => {
   };
 
   return (
-    <List renderHeader={() => "注册新用户..."}>
+    <List>
       <InputItem
         clear
         placeholder="昵称"
@@ -85,3 +86,6 @@ export default createForm()((props) => {
     </List>
   );
 });
+RegisterPage.title = '注册账号';
+
+export default RegisterPage;

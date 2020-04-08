@@ -6,6 +6,7 @@ import { Flex, WhiteSpace, Button } from "antd-mobile";
 import { Toast, InputItem, List, TextareaItem } from "antd-mobile";
 
 import styles from "./form.css";
+import conf from '../../../conf';
 import api from "../../../apis/question";
 
 const validateRules = {
@@ -21,7 +22,7 @@ export default createForm()((props) => {
 
   const { loading, run: doPost } = useRequest(api.create, {
     manual: true,
-    onSuccess: (data) => props.history.push('/main')
+    onSuccess: (data) => props.history.push(conf.uris.main)
   });
 
   const addExtraDataAndPost = (dat)=> {
@@ -30,6 +31,11 @@ export default createForm()((props) => {
   };
 
   const handleSubmit = () => {
+    if (props.data['updatedAt']) {
+      showErrorNotification('您没有权限修改！');
+      return;
+    }
+
     props.form.validateFields((err, value) => {
       _.isNil(err)
         ? addExtraDataAndPost(value)
@@ -38,7 +44,7 @@ export default createForm()((props) => {
   };
 
   return (
-    <List renderHeader={() => "创建新问题..."}>
+    <List>
       <InputItem
         clear
         placeholder="标题"
@@ -62,6 +68,14 @@ export default createForm()((props) => {
         defaultValue={props.data['content']}
         {...getFieldProps("content", { ...validateRules["content"] })}
       />
+
+      { props.data['createdAt'] &&
+        <InputItem disabled defaultValue={props.data['createdAt']} editable={false}/>
+      }
+
+      { props.data['updatedAt'] &&
+        <InputItem disabled defaultValue={props.data['updatedAt']} editable={false}/>
+      }
 
       <WhiteSpace size="lg"/>
 
