@@ -3,10 +3,9 @@ import React from "react";
 import { Link, NavLink, useRequest } from "umi";
 import { Icon, List, Pagination } from "antd-mobile";
 
-import conf from '../../conf';
+import conf from "../../conf";
 import styles from "./index.css";
 import api from "../../apis/question";
-import { current, clean } from "../../helper/current-user";
 
 const [Item, Brief] = [List.Item, List.Item.Brief];
 
@@ -22,9 +21,28 @@ const renderFooter = (props, data) => {
 };
 
 const renderEmptyDataPanel = () => {
-  return (<div>
+  return (<div style={{ color: "#000" }}>
     暂无数据， 你可以「<NavLink to={conf.uris.questionCreate}>新建</NavLink>」
     <br/><br/>
+  </div>);
+};
+
+const renderLoadingTips = () => {
+  return (
+    <div>
+      数据读取中...
+      <Icon type="loading" size="lg"/>
+    </div>
+  );
+};
+
+const renderErrorPanel = (error, props) => {
+  if (error.message === "No authorization token was found") {
+    setTimeout(() => props.history.push(conf.uris.login), 500);
+  }
+
+  return (<div style={{ color: "red" }}>
+    读取数据失败：{error.message}
   </div>);
 };
 
@@ -55,37 +73,29 @@ const renderQuestionDataList = (questions) => {
   });
 };
 
-const renderChildren = (loading, data, error) => {
+const renderChildren = (loading, data, error, props) => {
   if (loading) {
-    return (<div>
-      数据读取中...
-      <Icon type="loading" size="lg"/>
-    </div>);
+    return renderLoadingTips();
   }
 
   if (error) {
-    return (<div style={{ color: "red" }}>
-      读取数据失败：{error.message}
-    </div>);
+    return renderErrorPanel(error, props);
   }
 
-  if (_.isEmpty(data.rows)) {
-    return renderEmptyDataPanel();
-  } else {
-    return renderQuestionDataList(data.rows);
-  }
+  return _.isEmpty(data.rows)
+    ? renderEmptyDataPanel()
+    : renderQuestionDataList(data.rows);
 };
 
-function MainPage (props) {
-  const user = current();
+function MainPage(props) {
   const { loading, data, error } = useRequest(api.list);
-
   return (
     <List renderFooter={() => renderFooter(props, data)}>
-      {renderChildren(loading, data, error)}
+      {renderChildren(loading, data, error, props)}
     </List>
   );
 }
-MainPage.title = '问题列表';
+
+MainPage.title = "问题列表";
 
 export default MainPage;

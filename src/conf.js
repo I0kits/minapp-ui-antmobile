@@ -11,5 +11,6 @@ export default {
 
     questionCreate: '/question/create.html',
     questionWithId: (id)=> `/question/${id}.html`,
-  }
+  },
+  apiUrl: (uri)=> `${process.env.API_HOST}${uri}`,
 }

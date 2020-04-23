@@ -8,6 +8,8 @@
     "start": "umi dev",
     "build": "umi build",
     "test": "umi-test",
+    "serve": "serve ./dist",
+    "deploy": "node deploy.js",
     "test:coverage": "umi-test --coverage",
     "gen": "umi generate page index"
   },
@@ -30,5 +32,9 @@
     "store2": "^2.11.0",
     "umi": "^3.0.16",
     "yorkie": "^2.0.0"
+  },
+  "devDependencies": {
+    "ali-oss": "^6.6.0",
+    "serve": "^11.3.0"
   }
 }

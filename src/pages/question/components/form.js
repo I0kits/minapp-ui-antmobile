@@ -6,8 +6,9 @@ import { Flex, WhiteSpace, Button } from "antd-mobile";
 import { Toast, InputItem, List, TextareaItem } from "antd-mobile";
 
 import styles from "./form.css";
-import conf from '../../../conf';
+import conf from "../../../conf";
 import api from "../../../apis/question";
+import { current } from "../../../helper/current-user";
 
 const validateRules = {
   "title": { rules: [{ required: true }] },
@@ -25,14 +26,14 @@ export default createForm()((props) => {
     onSuccess: (data) => props.history.push(conf.uris.main)
   });
 
-  const addExtraDataAndPost = (dat)=> {
+  const addExtraDataAndPost = (dat) => {
     //TODO: read current user info as the Author's ID.
-    doPost({...dat, author_id: 1});
+    doPost({ ...dat, author_id: current().author });
   };
 
   const handleSubmit = () => {
-    if (props.data['updatedAt']) {
-      showErrorNotification('您没有权限修改！');
+    if (props.data["updatedAt"]) {
+      showErrorNotification("您没有权限修改！");
       return;
     }
 
@@ -49,7 +50,7 @@ export default createForm()((props) => {
         clear
         placeholder="标题"
         error={hasError("title")}
-        defaultValue={props.data['title']}
+        defaultValue={props.data["title"]}
         {...getFieldProps("title", { ...validateRules["title"] })}>
       </InputItem>
 
@@ -57,7 +58,7 @@ export default createForm()((props) => {
         clear
         placeholder="子标题"
         error={hasError("subtitle")}
-        defaultValue={props.data['subtitle']}
+        defaultValue={props.data["subtitle"]}
         {...getFieldProps("subtitle", { ...validateRules["subtitle"] })}>
       </InputItem>
 
@@ -65,16 +66,16 @@ export default createForm()((props) => {
         rows={3}
         error={hasError("content")}
         placeholder="问题内容"
-        defaultValue={props.data['content']}
+        defaultValue={props.data["content"]}
         {...getFieldProps("content", { ...validateRules["content"] })}
       />
 
-      { props.data['createdAt'] &&
-        <InputItem disabled defaultValue={props.data['createdAt']} editable={false}/>
+      {props.data["createdAt"] &&
+      <InputItem disabled defaultValue={props.data["createdAt"]} editable={false}/>
       }
 
-      { props.data['updatedAt'] &&
-        <InputItem disabled defaultValue={props.data['updatedAt']} editable={false}/>
+      {props.data["updatedAt"] &&
+      <InputItem disabled defaultValue={props.data["updatedAt"]} editable={false}/>
       }
 
       <WhiteSpace size="lg"/>

@@ -26,6 +26,25 @@ const addToken = (url, opts)=> {
 };
 
 export const request = {
-  timeout: 1000,
+  timeout: 60000,
   requestInterceptors: [addToken],
+  errorConfig: {
+    adaptor: (data, { req, res })=> {
+      const ret = _.isObject(data) ? data : {data};
+
+      if (!_.has(ret, 'errorCode')) {
+        ret.errorCode = res.status;
+      }
+
+      if (!_.has(ret, 'errorMessage')) {
+        ret.errorMessage = res.statusText;
+      }
+
+      if (!_.has(ret, 'success')) {
+        ret.success = res.status === 200;
+      }
+
+      return ret;
+    }
+  }
 };

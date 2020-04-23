@@ -37,11 +37,8 @@ const renderActions = (props) => {
 
 const titles = {};
 const getTitle = (path, routes) => {
-  console.log('path:', path);
-  console.log('routes:', routes);
   if (_.isNil(titles[path])) {
     const route = _.find(routes, { path });
-    console.log(route);
     titles[path] = _.get(route, 'component.title', 'No title');
   }
 
@@ -49,7 +46,6 @@ const getTitle = (path, routes) => {
 };
 
 export default (props) => {
-  console.log(props);
   const routes = props.route.routes;
   const path = props.location.pathname;
 

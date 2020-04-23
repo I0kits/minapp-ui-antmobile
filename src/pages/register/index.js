@@ -25,9 +25,8 @@ const RegisterPage = createForm()((props) => {
   const pathname = conf.uris.registerConfirm;
   const { loading, run: doPost } = useRequest(api.register, {
     manual: true,
-    onSuccess: ([author, account]) => {
-      props.history.push({ pathname, state: { author, account } });
-    }
+    onSuccess: (state) => props.history.push({ pathname, state }),
+    onError: (err) => console.error(err)
   });
 
   const handleSubmit = () => {
