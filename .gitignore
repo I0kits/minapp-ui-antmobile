@@ -15,3 +15,5 @@ yarn-error.log
 /src/.umi
 /src/.umi-production
 /src/.umi-test
+
+_secrets*

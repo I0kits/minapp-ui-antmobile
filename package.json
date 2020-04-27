@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "ali-oss": "^6.6.0",
+    "date-format": "^3.0.0",
+    "globby": "^11.0.0",
     "serve": "^11.3.0"
   }
 }
